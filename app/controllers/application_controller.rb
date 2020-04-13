@@ -2,20 +2,27 @@ require './config/environment'
 
 class ApplicationController < Sinatra::Base
 
-  configure do
-    set :public_folder, 'public'
-    set :views, 'app/views'
-  end
+    configure do
+      set :public_folder, 'public'
+	  set :views, 'app/views'
+	  enable :sessions
+	  set :session_secret
+    end
 
-  get "/" do
-    erb :index
-  end
+    get "/" do
+      erb :index
+    end
 
-  get "/signup" do
+    get "/signup" do
 		erb :signup
-  end
+	end
+	
+	get "/users" do
+		@users=User.all
+		erb :'/user/index'
+	end
   
-  post "/users" do
+    post "/users" do
 		user = User.new(:username => params[:username],
 		 :password => params[:password])
 
@@ -24,11 +31,11 @@ class ApplicationController < Sinatra::Base
 		else
 		  redirect "/failure"
 		end
-  end
+    end
   
-  get "/login" do
+    get "/login" do
 		erb :login
-	end
+    end
 
 	post "/login" do
 		user = User.find_by(:username => params[:username])
@@ -38,15 +45,26 @@ class ApplicationController < Sinatra::Base
 		  erb :success
 		else
 		  redirect "/failure"
+        end
     end
-  end
   
-  get "/success" do
+	get "/success" do
+		user = User.find_by(:username => params[:username])
 		if logged_in?
+			session[:id] = user.id
 			erb :success
 		else
 			redirect "/login"
 		end
+	end
+
+	post "/success" do
+	  game = Game.new(:name => params[:name], :system => params[:system])
+	   redirect "/success"
+	end
+	
+	get "/games" do
+		erb :games
 	end
 
 	get "/failure" do
@@ -67,5 +85,4 @@ class ApplicationController < Sinatra::Base
 			User.find(session[:id])
 		end
 	end
-
 end
