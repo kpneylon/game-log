@@ -6,7 +6,7 @@ class ApplicationController < Sinatra::Base
       set :public_folder, 'public'
 	  set :views, 'app/views'
 	  enable :sessions
-	  set :session_secret
+	  set :session_secret, "secret"
     end
 
     get "/" do
@@ -40,18 +40,16 @@ class ApplicationController < Sinatra::Base
 	post "/login" do
 		user = User.find_by(:username => params[:username])
 	   
-		if user && user.authenticate(params[:password])
+		if user 
 		  session[:id] = user.id
-		  erb :success
+		  redirect "/success"
 		else
 		  redirect "/failure"
         end
     end
   
 	get "/success" do
-		user = User.find_by(:username => params[:username])
-		if logged_in?
-			session[:id] = user.id
+		if session[:user_id]
 			erb :success
 		else
 			redirect "/login"
@@ -59,12 +57,10 @@ class ApplicationController < Sinatra::Base
 	end
 
 	post "/success" do
-	  game = Game.new(:name => params[:name], :system => params[:system])
+		user = User.find_by(:user_id => session[:user_id])
+		tweet = Game.new(:user => user, :status => params[:status])
+		game.save
 	   redirect "/success"
-	end
-	
-	get "/games" do
-		erb :games
 	end
 
 	get "/failure" do
@@ -78,11 +74,11 @@ class ApplicationController < Sinatra::Base
 
 	helpers do
 		def logged_in?
-			!!session[:id]
+			session[:user_id]
 		end
 
 		def current_user
-			User.find(session[:id])
+			User.find(session[:user_id])
 		end
 	end
 end
