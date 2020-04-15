@@ -20,21 +20,19 @@ class GameController < ApplicationController
     end
   
     post '/games' do
-      binding.pry
-      @user = current_user
-      if logged_in? && !params[:name].empty?
-      @game = Games.create(name: params[:name], system: params[:system])
-      @user.games << @game
-      redirect '/games'
+      if params[:name] != "" && params[:system] != ""
+        @game = Game.create(name: params[:name], system: params[:system])
+        current_user.games << @game
+        redirect '/games/new'
       else
-        redirect '/games/new_game'
+        redirect '/users/show'
       end
     end
   
     get '/games/:id' do
       if logged_in?
-        @game = Games.find_by(id: params[:id])
-        erb :'games/show'
+        @game = Game.find_by(id: params[:id])
+        erb :'users/show'
       else
         redirect '/failure'
       end
@@ -42,7 +40,7 @@ class GameController < ApplicationController
   
     get '/games/:id/edit' do
       if logged_in?
-        @game = Games.find_by(id: params[:id])
+        @game = Game.find_by(id: params[:id])
         erb :'games/edit'
       else
         redirect '/failure'
@@ -51,7 +49,7 @@ class GameController < ApplicationController
   
     patch '/games/:id' do
       if logged_in? && !params[:name].empty?
-        @game = Games.find_by(id: params[:id])
+        @game = Game.find_by(id: params[:id])
         @game.name = (params[:name])
         @game.save
         redirect "/games/#{@game.id}"
@@ -61,7 +59,7 @@ class GameController < ApplicationController
     end
   
     delete '/games/:id/edit' do
-      @game = Games.find_by(id: params[:id])
+      @game = Game.find_by(id: params[:id])
       @user = current_user
       if logged_in?
         @game.delete
@@ -71,4 +69,4 @@ class GameController < ApplicationController
       end
     end
   
-  end
+end

@@ -2,7 +2,7 @@
 <html>
   <body>
     <% @user.games.each.with_index do |g| %>
-    <%= g.name %><%=g.system %><br>
+    <h3>Name:</h3> <%= g.name %> <h3>System:</h3><%=g.system %><br>
     <br> 
     <% end %>
   
