@@ -2,11 +2,11 @@
 <html>
   <body>
     <% @user.games.each.with_index do |g| %>
-    <h3>Name:</h3> <%= g.name %> <h3>System:</h3><%=g.system %><br>
+    <b>Name:</b> <%= g.name %> <b>System:</b><%=g.system %><br>
     <br> 
     <% end %>
   
-    <br>Please <a href="/games/new">Add a game</a> or <a href="/edit">Edit a game</a> to continue.
+    <br>Please <a href="/games/new">Add a game</a> or <a href="/games/:id/edit">Edit a game</a> to continue.
   
   </body>
 </html>

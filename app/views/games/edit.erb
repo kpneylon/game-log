@@ -1,1 +1,14 @@
-<h1>Works</h1>
+<form action="/games/<%= @games.id %>" method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  Name: <input type="text" name="name"><br>
+  
+  <br>
+  <input type="submit" value="Change">
+</form>
+
+or
+
+<form action="" method="post">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" value="delete" id="Delete">
+</form>
