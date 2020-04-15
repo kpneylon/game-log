@@ -20,6 +20,7 @@ class GameController < ApplicationController
     end
   
     post '/games' do
+      binding.pry
       @user = current_user
       if logged_in? && !params[:name].empty?
       @game = Games.create(name: params[:name], system: params[:system])
