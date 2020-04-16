@@ -32,6 +32,7 @@ class GameController < ApplicationController
     get '/games/:id' do
       if logged_in?
         @game = Game.find_by(id: params[:id])
+        binding.pry
         erb :'users/show'
       else
         redirect '/failure'
