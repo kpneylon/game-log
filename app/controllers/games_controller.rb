@@ -5,7 +5,7 @@ class GameController < ApplicationController
         @user = current_user
         session[:user_id] = @user.id
         @games = Game.all
-        erb :'/games/home'
+        erb :'/games/edit'
       else
         redirect '/'
       end
@@ -63,7 +63,7 @@ class GameController < ApplicationController
       @user = current_user
       if logged_in?
         @game.delete
-        redirect '/games'
+        redirect '/users/show'
       else
         redirect "/games/#{@game.id}"
       end
