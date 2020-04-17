@@ -5,8 +5,8 @@
     <b>Name:</b> <%= g.name %> <b>System:</b><%=g.system %><br>
     <br> 
     <% end %><br>
-    <form action="/games/<%= @games.id %>" method="post">
-     <input id="hidden" type="hidden" name="_method" value="patch">
+    <form action="/games/<%= @game.id %>/edit" method="post">
+     <input type="hidden" name="_method" value="patch">
       Name: <input type="text" name="name"><br>
      <input type="radio" name="system" value="Playstation">Playstation
      <input type="radio" name="system" value="Xbox">XBox
