@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <% @user.games.each.with_index do |g| %>
-    <b>Name:</b> <%= g.name %> <b>System:</b><%=g.system %><br>
-    <br> 
-    <% end %><br>
-    <form action="/games/<%= @game.id %>/edit" method="post">
+    
+    <br>
+    <form action="/games/:id/edit" method="post">
      <input type="hidden" name="_method" value="patch">
       Name: <input type="text" name="name"><br>
      <input type="radio" name="system" value="Playstation">Playstation
@@ -19,8 +17,8 @@
     or
 
      <form action="" method="post">
-       <input value="delete">
-       <input type="submit" value="delete" id="Delete">
+       <input value="">
+       <input type="submit" value="Delete" id="delete">
      </form>
   </body>
 </html>
