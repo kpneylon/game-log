@@ -5,7 +5,7 @@
     <br>
     <form action="/games/<%= @game.id %>" method="POST">
      <input id="hidden" type="hidden" name="_method" value="patch">
-      Name: <input type="text" name="name"><br>
+      Name: <input type="text" name="name" value="<%= @game.name %>"><br>
      <input type="radio" name="system" value="Playstation">Playstation
      <input type="radio" name="system" value="Xbox">XBox
      <input type="radio" name="system" value="PC">PC
@@ -16,8 +16,8 @@
   
     or
 
-     <form action="" method="post">
-       <input value="">
+     <form action="/games/<%= @game.id %>" method="post">
+       <input id="hidden" type="hidden" name="_method" value="delete">
        <input type="submit" value="Delete" id="delete">
      </form>
   </body>

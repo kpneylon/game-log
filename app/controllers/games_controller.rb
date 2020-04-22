@@ -21,16 +21,16 @@ class GameController < ApplicationController
       if params[:name] != "" && params[:system] != ""
         @game = Game.create(name: params[:name], system: params[:system])
         current_user.games << @game
-        redirect '/games/show'
+        redirect "/users/#{current_user.slug}"
       else
         redirect '/users/new'
       end
     end
   
     get '/games/:id' do
-      if logged_in?
-        @game = Game.find_by(id: params[:id])
-        erb :'users/show'
+      if current_user
+        @game = current_user.games.find_by(params[:id])
+        erb :users/show
       else
         redirect '/failure'
       end
@@ -46,28 +46,21 @@ class GameController < ApplicationController
       end
     end
   
-    patch '/games/:id' do
-      binding.pry
-      if params[:name] != "" && params[:system] != ""
-         @game = Game.find_by(params[:id])
-         @game.name = params[:name]
-         @game.system = params[:system]
-         @game.user_id = current_user
-         @game.save
-         redirect to "/games/#{@game.id}"
+    patch '/games/:id' do      
+      if current_user
+         @game = Game.find_by(id: params[:id])
+         @game.update(name: params[:name], system: params[:system], user_id: current_user.id)
+         redirect to ("/users/#{current_user.slug}")
       else
-        redirect to "/games/#{@game.id}/edit"
+        redirect to "failure"
       end
    end
   
-    delete '/games/:id/edit' do
-      @game = @user.games.find_by(id: params[:id])
-      @user = current_user
-      if logged_in?
+    delete '/games/:id' do
+      if current_user
+        @game = Game.find_by(id: params[:id])
         @game.delete
-        redirect '/users/show'
-      else
-        redirect "/games/:id/edit"
+        redirect to "/users/#{current_user.slug}"
       end
     end
   

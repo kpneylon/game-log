@@ -3,10 +3,11 @@
   <body>
     <% @user.games.each.with_index do |g| %>
     <b>Name:</b> <%= g.name %> <b>System:</b><%=g.system %><br>
+    <a href="/games/<%= g.id %>/edit">Edit</a>
     <br> 
     <% end %>
   
-    <br>Please <a href="/games/new">Add a game</a> or <a href="/games/:id/edit">Edit a game</a> to continue.
+    <br>Please <a href="/games/new">Add a game</a>.
   
   </body>
 </html>
