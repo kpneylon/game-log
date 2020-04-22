@@ -27,4 +27,4 @@ Everyone interacting in the VideoGameDeals project’s codebases, issue trackers
 
 game-log
 License
-The gem is available as open source under the terms of the MIT License.
+This project is licensed under the MIT License - see the LICENSE.md file for details
