@@ -1,11 +1,10 @@
 class GameController < ApplicationController
 
     get '/games' do
-      if logged_in? && current_user
-        @game = Game.all
-        erb :'/games/edit'
-      else
-        redirect '/'
+      if logged_in?
+        @user = current_user
+        @game = current_user.games.find_by(id: params[:id])
+        erb :'games/game_list'
       end
     end
   
