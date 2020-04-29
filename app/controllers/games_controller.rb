@@ -23,13 +23,13 @@ class GameController < ApplicationController
         current_user.games << @game
         redirect "/users/#{current_user.slug}"
       else
-        redirect '/users/new'
+        redirect '/games/new'
       end
     end
   
     get '/games/:id' do
       if current_user
-        @game = current_user.games.find_by(params[:id])
+        @game = current_user.games.find_by(id: params[:id])
         erb :users/show
       else
         redirect '/failure'
@@ -37,28 +37,43 @@ class GameController < ApplicationController
     end
   
     get '/games/:id/edit' do
-      if logged_in?
-        @user = current_user
-        @game = Game.find_by(id: params[:id])
-        erb :'games/edit'
-      else
-        redirect '/failure'
+      if !logged_in?
+        redirect '/login'
       end
+        #@user = current_user
+        @game = current_user.games.find_by(id: params[:id])
+        if @game == nil
+          redirect "/users/#{current_user.slug}"
+        end
+        erb :'games/edit'
+      
     end
   
-    patch '/games/:id' do      
-      if current_user
-         @game = Game.find_by(id: params[:id])
-         @game.update(name: params[:name], system: params[:system], user_id: current_user.id)
-         redirect to ("/users/#{current_user.slug}")
-      else
-        redirect to "failure"
+    patch '/games/:id' do
+      if !logged_in?
+        redirect '/login'
       end
+        #@user = current_user
+        @game.update(name: params[:name], system: params[:system])
+        if @game == nil
+          redirect "/users/#{current_user.slug}"
+        end
+        erb :'games/edit'      
+      #if current_user
+      #  @game = Game.find_by(id: params[:id])
+      #   @game.update(name: params[:name], system: params[:system])
+      #   redirect to ("/users/#{current_user.slug}")
+      #else
+      #  redirect to "failure"
+      #end
    end
   
     delete '/games/:id' do
+      if !logged_in?
+        redirect '/login'
+      end
       if current_user
-        @game = Game.find_by(id: params[:id])
+        @game = current_user.games.find_by(id: params[:id])
         @game.delete
         redirect to "/users/#{current_user.slug}"
       end
