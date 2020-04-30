@@ -39,7 +39,6 @@ class GameController < ApplicationController
       if !logged_in?
         redirect '/login'
       end
-        #@user = current_user
         @game = current_user.games.find_by(id: params[:id])
         if @game == nil
           redirect "/users/#{current_user.slug}"
@@ -52,30 +51,25 @@ class GameController < ApplicationController
       if !logged_in?
         redirect '/login'
       end
-        #@user = current_user
-        @game.update(name: params[:name], system: params[:system])
-        if @game == nil
-          redirect "/users/#{current_user.slug}"
-        end
+      @game = current_user.games.find_by(id: params[:id])
+      if @game == nil
+        redirect "/users/#{current_user.slug}"
+      end
+      @game.update(name: params[:name], system: params[:system])
+       
         erb :'games/edit'      
-      #if current_user
-      #  @game = Game.find_by(id: params[:id])
-      #   @game.update(name: params[:name], system: params[:system])
-      #   redirect to ("/users/#{current_user.slug}")
-      #else
-      #  redirect to "failure"
-      #end
    end
   
     delete '/games/:id' do
       if !logged_in?
         redirect '/login'
       end
-      if current_user
-        @game = current_user.games.find_by(id: params[:id])
-        @game.delete
-        redirect to "/users/#{current_user.slug}"
+      @game = current_user.games.find_by(id: params[:id])
+      if @game == nil
+        redirect "/users/#{current_user.slug}"
       end
+      @game.delete
+      redirect to "/users/#{current_user.slug}"
     end
   
 end
