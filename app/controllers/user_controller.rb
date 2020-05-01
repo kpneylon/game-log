@@ -12,7 +12,11 @@ class UserController < ApplicationController
       if params[:username] != "" && params[:password] != ""
       @user = User.create(username: params[:username], password: params[:password])
       session[:user_id] = @user.id
-      redirect "/users/#{@user.slug}"
+        if @user.valid?
+          redirect "/users/#{@user.slug}"
+        else
+          erb :'/failure'
+        end
       else
         erb :'/failure'
       end
@@ -37,8 +41,12 @@ class UserController < ApplicationController
     end
   
     get '/users/:slug' do
-      @user = User.find_by_slug(params[:slug])
-      erb :"/users/show"
+      if !logged_in?
+        redirect '/login'
+      else
+        @user = User.find_by_slug(params[:slug])
+        erb :"/users/show"
+      end
     end
   
     get '/logout' do

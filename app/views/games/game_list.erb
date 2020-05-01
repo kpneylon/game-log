@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <% @user.games.each.with_index do |g| %>
-    <b>Name:</b> <%= g.name %> <b>System:</b><%=g.system %><br>
+
+    <% @games.each do |g| %>
+    <b>Name:</b> <%= g.name %> <b>System:</b><%=g.system %> <b>Owner:</b><%= g.user.username %><br>
     <br> 
     <% end %>
   
     <br>Please <a href="/games/new">Add a game</a><br>
     <a href="/login">Profile</a>
   
-  </body>
-</html>
